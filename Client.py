@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import os
 
 screenshot_path = os.path.dirname(__file__) + "\\screenshots\\"
 client = commands.Bot(command_prefix = "$", Intents = discord.Intents().all(), case_insensitive=True)
