@@ -1,31 +1,43 @@
 import discord
 from discord.ext import commands
 import os
+import random
 
 screenshot_path = os.path.dirname(__file__) + "\\screenshots\\"
 client = commands.Bot(command_prefix = "$", Intents = discord.Intents().all(), case_insensitive=True)
 secret = "ODA5MDQ2NzY2MzEzOTMwNzYy." + "YCPZhA.L2M2BAH8uB3Qq5iBMlA_KpJKu7Y"
 
+connected_users = []
 
 @client.command()
 async def waifu(ctx):
-    await ctx.channel.send("Hello, my name is ThisAnimeDoesNotExist Bot :slight_smile:\nUsing me, you can get pictures of anime characters that do not exist from https://thisanimedoesnotexist.ai .\nAll you need to do is give me a few details and I'll fetch a picture.\nLet's start with the picture's seed.")
+    if ctx.author.id in connected_users:
+        await ctx.channel.send("Whoops! One user cannot start me twice. Try again")
+        return
+    else:
+        connected_users.append(ctx.author.id)
+
+    await ctx.channel.send("Hello, my name is ThisAnimeDoesNotExist Bot :slight_smile:\nUsing me, you can get pictures of anime characters that do not exist from https://thisanimedoesnotexist.ai .\nAll you need to do is give me a few details and I'll fetch a picture.\n WARNING: since this bot uses an AI, it may produce lewed pictures.\nLet's start with the picture's seed.")
     await ask_for_seed(ctx)
     await ctx.channel.send("Great! Now let's move on to the next part.")
     await ask_for_creativity_level(ctx)
 
     await ctx.channel.send("Here's your Anime! Thanks for playing! :slight_smile:")
     await ctx.channel.send('https://thisanimedoesnotexist.ai/results/psi-' + str(round(psi_level, 1)) + "/seed" + seed + '.png')
+    connected_users.remove(ctx.author.id)
 
 
 
 async def ask_for_seed(ctx):
-    await ctx.channel.send("The seed determines the base picture.\nWhat Seed?")
+    await ctx.channel.send("The seed determines the base picture. You can either type a number or type 'random' to get a random seed.\nWhat Seed?")
     global msg, seed
     msg = await client.wait_for("message", timeout=120)
     while not await check(msg, ctx):
         msg = await client.wait_for("message", timeout=120)
     seed = msg.content
+    if seed.lower() == "random":
+        seed = str(random.randint(1, 10000))
+        await ctx.channel.send("Seed is " + seed)
 
     if not seed.isnumeric():
         await ctx.channel.send("Seeds have to be numbers only! Try again.")
@@ -45,12 +57,16 @@ async def ask_for_seed(ctx):
 
 async def ask_for_creativity_level(ctx):
     global msg
-    await ctx.channel.send("This part will determine how creative the AI will be when creating the picture.\nAI creativity level? (1-18)")
+    await ctx.channel.send("This part will determine how creative the AI will be when creating the picture. 'random' is also an option here :wink:\nAI creativity level? (1-18)")
     msg = await client.wait_for("message", timeout=120)
     while not await check(msg, ctx):
         msg = await client.wait_for("message", timeout=120)
 
     creativity_value = msg.content
+
+    if creativity_value.lower() == "random":
+        creativity_value = str(random.randint(1, 18))
+        await ctx.channel.send("Creativity level is " + creativity_value)
 
     if not creativity_value.isnumeric():
         await ctx.channel.send("Creativity Values have to be numbers only! Try again.")
@@ -69,6 +85,8 @@ async def ask_for_creativity_level(ctx):
 
 async def check(msg, ctx):
     if not (msg.author == ctx.author and msg.channel == ctx.channel):
+        return False
+    if msg.content == "$waifu":
         return False
     else:
         return True
