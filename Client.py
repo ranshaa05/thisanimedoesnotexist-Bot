@@ -9,7 +9,9 @@ secret = "ODA5MDQ2NzY2MzEzOTMwNzYy." + "YCPZhA.L2M2BAH8uB3Qq5iBMlA_KpJKu7Y"
 
 @client.command()
 async def waifu(ctx):
+    await ctx.channel.send("Hello, my name is ThisAnimeDoesNotExist Bot :slight_smile:\nUsing me, you can get pictures of anime characters that do not exist from https://thisanimedoesnotexist.ai .\nAll you need to do is give me a few details and I'll fetch a picture.\nLet's start with the picture's seed.")
     await ask_for_seed(ctx)
+    await ctx.channel.send("Great! Now let's move on to the next part.")
     await ask_for_creativity_level(ctx)
 
     await ctx.channel.send("Here's your Anime! Thanks for playing! :slight_smile:")
@@ -18,7 +20,7 @@ async def waifu(ctx):
 
 
 async def ask_for_seed(ctx):
-    await ctx.channel.send("What Seed?")
+    await ctx.channel.send("The seed determines the base picture.\nWhat Seed?")
     global msg, seed
     msg = await client.wait_for("message", timeout=120)
     while not await check(msg, ctx):
@@ -43,7 +45,7 @@ async def ask_for_seed(ctx):
 
 async def ask_for_creativity_level(ctx):
     global msg
-    await ctx.channel.send("Creativity level? (1-18)")
+    await ctx.channel.send("This part will determine how creative the AI will be when creating the picture.\nAI creativity level? (1-18)")
     msg = await client.wait_for("message", timeout=120)
     while not await check(msg, ctx):
         msg = await client.wait_for("message", timeout=120)
