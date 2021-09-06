@@ -3,7 +3,6 @@ from discord.ext import commands
 import os
 import random
 
-screenshot_path = os.path.dirname(__file__) + "\\screenshots\\"
 client = commands.Bot(command_prefix = "$", Intents = discord.Intents().all(), case_insensitive=True)
 secret = "ODA5MDQ2NzY2MzEzOTMwNzYy." + "YCPZhA.L2M2BAH8uB3Qq5iBMlA_KpJKu7Y"
 
@@ -25,7 +24,6 @@ async def waifu(ctx):
     await ctx.channel.send("Here's your Anime! Thanks for playing! :slight_smile:")
     await ctx.channel.send('https://thisanimedoesnotexist.ai/results/psi-' + str(round(psi_level, 1)) + "/seed" + seed + '.png')
     connected_users.remove(ctx.author.id)
-
 
 
 async def ask_for_seed(ctx):
