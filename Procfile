@@ -1,1 +1,1 @@
-web: python Client.py
+web: python3 Client.py
