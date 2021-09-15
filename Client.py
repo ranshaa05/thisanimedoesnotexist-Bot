@@ -11,7 +11,7 @@ connected_users = []
 @client.command()
 async def waifu(ctx):
     if ctx.author.id in connected_users:
-        await ctx.channel.send("Whoops! One user cannot start me twice. Try again")
+        await ctx.channel.send("Whoops! One user cannot start me twice. Try again.")
         return
     else:
         connected_users.append(ctx.author.id)
