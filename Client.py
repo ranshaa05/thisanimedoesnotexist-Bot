@@ -7,6 +7,10 @@ secret = "ODA5MDQ2NzY2MzEzOTMwNzYy." + "YCPZhA.L2M2BAH8uB3Qq5iBMlA_KpJKu7Y"
 
 connected_users = []
 
+@client.event
+async def on_ready():
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="$waifu"))
+
 @client.command()
 async def waifu(ctx):
     if ctx.author.id in connected_users:
