@@ -10,15 +10,22 @@ connected_users = []
 @client.command()
 async def waifu(ctx):
     if ctx.author.id in connected_users:
-        await ctx.channel.send("Whoops! One user cannot start me twice. Try again.")
+        await ctx.channel.send("Whoops! One user cannot start me twice. You can type 'exit or try again.")
         return
     else:
         connected_users.append(ctx.author.id)
 
     await ctx.channel.send("Hello, my name is ThisAnimeDoesNotExist Bot :slight_smile:\nUsing me, you can get pictures of anime characters that do not exist from https://thisanimedoesnotexist.ai .\nAll you need to do is give me a few details and I'll fetch a picture.\n WARNING: since this bot uses an AI, it may produce lewed pictures.\nLet's start with the picture's seed.")
-    await ask_for_seed(ctx)
+    
+    if await ask_for_seed(ctx) == False:                    #this executes the functions and checks if a user exited.
+        await ctx.channel.send("Exiting...")
+        connected_users.remove(ctx.author.id)
+        return 
     await ctx.channel.send("Great! Now let's move on to the next part.")
-    await ask_for_creativity_level(ctx)
+    if await ask_for_creativity_level(ctx) == False:
+        await ctx.channel.send("Exiting...")
+        connected_users.remove(ctx.author.id)
+        return 
 
     await ctx.channel.send("Here's your Anime! Thanks for playing! :slight_smile:")
     await ctx.channel.send('https://thisanimedoesnotexist.ai/results/psi-' + str(round(psi_level, 1)) + "/seed" + seed + '.png')
@@ -35,6 +42,9 @@ async def ask_for_seed(ctx):
     if seed.lower() == "random":
         seed = str(randint(1, 10000))
         await ctx.channel.send("Seed is " + seed)
+    
+    if seed.lower() == "exit":
+        return False
 
     if not seed.isnumeric():
         await ctx.channel.send("Seeds have to be numbers only! Try again.")
@@ -64,6 +74,9 @@ async def ask_for_creativity_level(ctx):
     if creativity_value.lower() == "random":
         creativity_value = str(randint(1, 18))
         await ctx.channel.send("Creativity level is " + creativity_value)
+
+    if creativity_value.lower() == "exit":
+        return False
 
     if not creativity_value.isnumeric():
         await ctx.channel.send("Creativity Values have to be numbers only! Try again.")
