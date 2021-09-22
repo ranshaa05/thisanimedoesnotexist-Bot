@@ -21,15 +21,10 @@ async def waifu(ctx):
 
     await ctx.channel.send("Hello, my name is ThisAnimeDoesNotExist Bot :slight_smile:\nUsing me, you can get pictures of anime characters that do not exist from https://thisanimedoesnotexist.ai .\nAll you need to do is give me a few details and I'll fetch a picture.\n WARNING: since this bot uses an AI, it may produce lewed pictures.\nLet's start with the picture's seed.")
     
-    if await ask_for_seed(ctx) == False:                    #this executes the functions and checks if a user exited.
+    if await ask_for_seed(ctx) == False or await ask_for_creativity_level(ctx) == False:                    #this executes the functions and checks if a user exited.
         await ctx.channel.send("Exiting...")
         connected_users.remove(ctx.author.id)
-        return 
-    await ctx.channel.send("Great! Now let's move on to the next part.")
-    if await ask_for_creativity_level(ctx) == False:
-        await ctx.channel.send("Exiting...")
-        connected_users.remove(ctx.author.id)
-        return 
+        return
 
     await ctx.channel.send("Here's your Anime! Thanks for playing! :slight_smile:")
     await ctx.channel.send('https://thisanimedoesnotexist.ai/results/psi-' + str(round(psi_level, 1)) + "/seed" + seed + '.png')
@@ -59,10 +54,13 @@ async def ask_for_seed(ctx):
             if len(seed) == 5:
                 return
             seed = "0" + seed
+    
 
     else:
         await ctx.channel.send("Seeds can only be between 0 and 99999. Try again.")
         return await ask_for_seed(ctx)
+        
+    await ctx.channel.send("Great! Now let's move on to the next part.")
     
 
 
