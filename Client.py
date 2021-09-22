@@ -18,17 +18,20 @@ async def waifu(ctx):
         return
     else:
         connected_users.append(ctx.author.id)
+        print("\033[1;37;40mEvent: \033[1;32;40mBot started for user: " + ctx.author.name + "\033[0;37;40m")
 
     await ctx.channel.send("Hello, my name is ThisAnimeDoesNotExist Bot :slight_smile:\nUsing me, you can get pictures of anime characters that do not exist from https://thisanimedoesnotexist.ai .\nAll you need to do is give me a few details and I'll fetch a picture.\n WARNING: since this bot uses an AI, it may produce lewed pictures.\nLet's start with the picture's seed.")
     
     if await ask_for_seed(ctx) == False or await ask_for_creativity_level(ctx) == False:                    #this executes the functions and checks if a user exited.
         await ctx.channel.send("Exiting...")
         connected_users.remove(ctx.author.id)
+        print("\033[1;37;40mEvent: \033[93mBot closed for user '" + str(ctx.author.name) + "'\033[0;37;40m")
         return
 
     await ctx.channel.send("Here's your Anime! Thanks for playing! :slight_smile:")
     await ctx.channel.send('https://thisanimedoesnotexist.ai/results/psi-' + str(round(psi_level, 1)) + "/seed" + seed + '.png')
     connected_users.remove(ctx.author.id)
+    print("\033[1;37;40mEvent: \033[93mBot closed for user '" + str(ctx.author.name) + "'\033[0;37;40m")
 
 
 async def ask_for_seed(ctx):
