@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
-import os
-import random
+from random import randint
 
 client = commands.Bot(command_prefix = "$", Intents = discord.Intents().all(), case_insensitive=True)
 secret = "ODA5MDQ2NzY2MzEzOTMwNzYy." + "YCPZhA.L2M2BAH8uB3Qq5iBMlA_KpJKu7Y"
@@ -34,7 +33,7 @@ async def ask_for_seed(ctx):
         msg = await client.wait_for("message", timeout=120)
     seed = msg.content
     if seed.lower() == "random":
-        seed = str(random.randint(1, 10000))
+        seed = str(randint(1, 10000))
         await ctx.channel.send("Seed is " + seed)
 
     if not seed.isnumeric():
@@ -63,7 +62,7 @@ async def ask_for_creativity_level(ctx):
     creativity_value = msg.content
 
     if creativity_value.lower() == "random":
-        creativity_value = str(random.randint(1, 18))
+        creativity_value = str(randint(1, 18))
         await ctx.channel.send("Creativity level is " + creativity_value)
 
     if not creativity_value.isnumeric():
