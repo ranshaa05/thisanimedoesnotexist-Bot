@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from random import randint
+from asyncio import TimeoutError
 
 client = commands.Bot(command_prefix = "$", Intents = discord.Intents().all(), case_insensitive=True)
 secret = "ODA5MDQ2NzY2MzEzOTMwNzYy." + "YCPZhA.L2M2BAH8uB3Qq5iBMlA_KpJKu7Y"
@@ -18,28 +19,32 @@ async def waifu(ctx):
         return
     else:
         connected_users.append(ctx.author.id)
-        print("\033[1;37;40mEvent: \033[1;32;40mBot started for user: " + ctx.author.name + "\033[0;37;40m")
+        print("\033[1;37;40mEvent: \033[1;32;40mBot started for user: '" + ctx.author.name + "'.\033[0;37;40m")
 
     await ctx.channel.send("Hello, my name is ThisAnimeDoesNotExist Bot :slight_smile:\nUsing me, you can get pictures of anime characters that do not exist from https://thisanimedoesnotexist.ai .\nAll you need to do is give me a few details and I'll fetch a picture.\n WARNING: since this bot uses an AI, it may produce lewed pictures.\nLet's start with the picture's seed.")
     
     if await ask_for_seed(ctx) == False or await ask_for_creativity_level(ctx) == False:                    #this executes the functions and checks if a user exited.
         await ctx.channel.send("Exiting...")
         connected_users.remove(ctx.author.id)
-        print("\033[1;37;40mEvent: \033[93mBot closed for user '" + str(ctx.author.name) + "'\033[0;37;40m")
+        print("\033[1;37;40mEvent: \033[93mBot closed for user '" + str(ctx.author.name) + "'.\033[0;37;40m")
         return
 
     await ctx.channel.send("Here's your Anime! Thanks for playing! :slight_smile:")
     await ctx.channel.send('https://thisanimedoesnotexist.ai/results/psi-' + str(round(psi_level, 1)) + "/seed" + seed + '.png')
     connected_users.remove(ctx.author.id)
-    print("\033[1;37;40mEvent: \033[93mBot closed for user '" + str(ctx.author.name) + "'\033[0;37;40m")
+    print("\033[1;37;40mEvent: \033[93mBot closed for user '" + str(ctx.author.name) + "'.\033[0;37;40m")
 
 
 async def ask_for_seed(ctx):
     await ctx.channel.send("The seed determines the base picture. You can either type a number or type 'random' to get a random seed.\nWhat Seed?")
     global msg, seed
-    msg = await client.wait_for("message", timeout=120)
-    while not await check(msg, ctx):
+    try:
         msg = await client.wait_for("message", timeout=120)
+        while not await check(msg, ctx):
+            msg = await client.wait_for("message", timeout=120)
+    except TimeoutError:
+        return False
+
     seed = msg.content
     if seed.lower() == "random":
         seed = str(randint(1, 10000))
@@ -49,7 +54,7 @@ async def ask_for_seed(ctx):
         return False
 
     if not seed.isnumeric():
-        await ctx.channel.send("Seeds have to be numbers only! Try again.")
+        await ctx.channel.send("Seeds have to be numbers only! You can type 'exit' to exit or try again.")
         return await ask_for_seed(ctx)
 
     if len(seed) <= 5:
@@ -70,9 +75,12 @@ async def ask_for_seed(ctx):
 async def ask_for_creativity_level(ctx):
     global msg
     await ctx.channel.send("This part will determine how creative the AI will be when creating the picture. 'random' is also an option here :wink:\nAI creativity level? (1-18)")
-    msg = await client.wait_for("message", timeout=120)
-    while not await check(msg, ctx):
+    try:
         msg = await client.wait_for("message", timeout=120)
+        while not await check(msg, ctx):
+            msg = await client.wait_for("message", timeout=120)
+    except TimeoutError:
+        return False
 
     creativity_value = msg.content
 
@@ -84,7 +92,7 @@ async def ask_for_creativity_level(ctx):
         return False
 
     if not creativity_value.isnumeric():
-        await ctx.channel.send("Creativity Values have to be numbers only! Try again.")
+        await ctx.channel.send("Creativity Values have to be numbers only! You can type 'exit' to exit or try again.")
         return await ask_for_creativity_level(ctx)
     
     creativity_value = int(creativity_value)
