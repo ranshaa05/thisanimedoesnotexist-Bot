@@ -1,2 +1,2 @@
 # thisanimedoesnotexist-Bot
-This is a Discord bot that scrapes https://thisanimedoesnotexist.ai and retrieves a picture based on user input.
+This is a Discord bot to return a picture from https://thisanimedoesnotexist.ai based on user input.

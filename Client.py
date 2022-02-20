@@ -6,7 +6,7 @@ from delete_messages import *
 from time import sleep
 
 client = commands.Bot(command_prefix = "$", Intents = discord.Intents().all(), case_insensitive=True)
-secret = "ODA5MDQ2NzY2MzEzOTMwNzYy." + "YCPZhA.L2M2BAH8uB3Qq5iBMlA_KpJKu7Y"
+secret = "OTAwMDQ2MDU2Nzk5MjE5NzYy.YW7n" + "NQ.hKw0jtjSXoKFI4sL1CP715mZuUE"
 
 msg_user_binder = {}
 connected_users = []
@@ -14,11 +14,18 @@ connected_users = []
 @client.event
 async def on_ready():
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="$waifu"))
+    print("Bot is ready!")
+
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, discord.ext.commands.errors.CommandNotFound):
+        return
+    raise error
 
 @client.command()
 async def waifu(ctx):
 
-    if ctx.message.content.lower() != "$waifu":
+    if ctx.message.content.lower() != "$waifu" and ctx.message.content.lower() != "$waifu start":
         await ctx.channel.send("Whoops, the correct command is '$waifu'!")
         await list_last_msg_id(ctx, msg_user_binder, client)
         return
@@ -28,22 +35,20 @@ async def waifu(ctx):
         await ctx.channel.send("Whoops! One user cannot start me twice. You can type 'exit or try again.")
         return
 
-
     else:
         connected_users.append(ctx.author.id)
         print("\033[1;37;40mEvent: \033[1;32;40mBot started for user: '" + ctx.author.name + "'.\033[0;37;40m")
 
-    await ctx.channel.send("Hello, my name is ThisAnimeDoesNotExist Bot :slight_smile:\nUsing me, you can get pictures of anime characters that do not exist from https://thisanimedoesnotexist.ai .\nAll you need to do is give me a few details and I'll fetch a picture.\nLet's start with the picture's seed.")
+    await ctx.channel.send("Hello, my name is ThisAnimeDoesNotExist Bot :slight_smile:\nUsing me, you can get pictures of anime characters that do not exist from <https://thisanimedoesnotexist.ai> .\nAll you need to do is give me a few details and I'll fetch a picture.\nLet's start with the picture's seed.")
     await list_last_msg_id(ctx, msg_user_binder, client)
 
-    if await ask_for_seed(ctx) == False or await ask_for_creativity_level(ctx) == False:                    #this executes the functions and checks if a user exited.
+    if not await ask_for_seed(ctx) or not await ask_for_creativity_level(ctx):                    #this executes the functions and checks if a user exited.
         await ctx.channel.send("Exiting...")
         await list_last_msg_id(ctx, msg_user_binder, client)
         connected_users.remove(ctx.author.id)
         await delete_messages(ctx, msg_user_binder, client)
         print("\033[1;37;40mEvent: \033[93mBot closed for user '" + str(ctx.author.name) + "'.\033[0;37;40m")
         return
-    
     
 
     await ctx.channel.send("Here's your Anime! Thanks for playing! :slight_smile:")
@@ -70,6 +75,7 @@ async def ask_for_seed(ctx):
         seed = str(randint(1, 10000))
         await ctx.channel.send("Seed is " + seed)
         await list_last_msg_id(ctx, msg_user_binder, client)
+        sleep(2)
     
     if seed.lower() == "exit":
         return False
@@ -115,6 +121,7 @@ async def ask_for_creativity_level(ctx):
         creativity_value = str(randint(1, 18))
         await ctx.channel.send("Creativity level is " + creativity_value)
         await list_last_msg_id(ctx, msg_user_binder, client)
+        sleep(2)
 
     if creativity_value.lower() == "exit":
         return False
