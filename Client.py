@@ -1,31 +1,34 @@
-import discord
-from discord.ext import commands
+import nextcord
+from nextcord.ext import commands
 from random import randint
 from asyncio import TimeoutError
 from delete_messages import *
 from time import sleep
 
-client = commands.Bot(command_prefix = "$", Intents = discord.Intents().all(), case_insensitive=True)
-secret = "OTAwMDQ2MDU2Nzk5MjE5NzYy.YW7n" + "NQ.hKw0jtjSXoKFI4sL1CP715mZuUE"
+client = commands.Bot(command_prefix = "$", Intents = nextcord.Intents().all(), case_insensitive=True)
+secret = "ODA5MDQ2NzY2MzEzOTMwNzYy.YCPZ" + "hA.L2M2BAH8uB3Qq5iBMlA_KpJKu7Y"
 
 msg_user_binder = {}
 connected_users = []
 
 @client.event
 async def on_ready():
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="$waifu"))
+    await client.change_presence(activity=nextcord.Activity(type=nextcord.ActivityType.listening, name="$waifu"))
     print("Bot is ready!")
 
 @client.event
 async def on_command_error(ctx, error):
-    if isinstance(error, discord.ext.commands.errors.CommandNotFound):
+    if isinstance(error, nextcord.ext.commands.errors.CommandNotFound):
         return
     raise error
 
 @client.command()
 async def waifu(ctx):
 
-    if ctx.message.content.lower() != "$waifu" and ctx.message.content.lower() != "$waifu start":
+    if ctx.message.content.lower() == "$waifu start":
+        return
+
+    if ctx.message.content.lower() != "$waifu":
         await ctx.channel.send("Whoops, the correct command is '$waifu'!")
         await list_last_msg_id(ctx, msg_user_binder, client)
         return
