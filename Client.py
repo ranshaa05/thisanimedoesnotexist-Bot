@@ -71,8 +71,7 @@ async def ask_for_seed(ctx):
         seed = await get_message(ctx)
         
 
-    seed = await random(ctx, 99999, seed) #TODO: this seems to always generate a 5 digit number for some reason.
-
+    seed = await random(ctx, 99999, seed)
     if await stop(seed):
         return False
 
@@ -136,7 +135,7 @@ async def check(msg, ctx):
     if not (msg.author == ctx.author and msg.channel == ctx.channel):
         return False
     
-    msg = msg.content
+    msg = msg.content.lower()
     if msg == "$waifu":
         return False
 
@@ -153,7 +152,7 @@ async def get_message(ctx):
         msg = await client.wait_for("message", timeout=120)
         while not await check(msg, ctx):
             msg = await client.wait_for("message", timeout=120)
-        return msg.content
+        return msg.content.lower()
     except TimeoutError:
         return False
 
