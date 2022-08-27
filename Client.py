@@ -5,8 +5,8 @@ from asyncio import TimeoutError
 from delete_messages import *
 from time import sleep
 
-client = commands.Bot(command_prefix = "$", Intents = nextcord.Intents().all(), case_insensitive=True)
-secret = "ODA5MDQ2NzY2MzEzOTMwNzYy.YCPZ" + "hA.L2M2BAH8uB3Qq5iBMlA_KpJKu7Y"
+client = commands.Bot(command_prefix = "$", intents = nextcord.Intents().all(), case_insensitive=True)
+secret = "OTAwMDQ2MDU2Nzk5MjE5NzYy.YW7n" + "NQ.hKw0jtjSXoKFI4sL1CP715mZuUE"
 
 msg_user_binder = {}
 connected_users = []
