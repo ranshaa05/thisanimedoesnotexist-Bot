@@ -15,7 +15,6 @@ logging.getLogger("nextcord").setLevel(logging.WARNING)
 
 #bot config
 client = commands.Bot(intents = nextcord.Intents().all(), case_insensitive=True)
-secret = "MTAxMDI1NzMyMjczNzY3NjM0OQ.G1joLg.DAD2m9bn-9nF6iqcncyvCDZWnAGk0AipvXP-1s"
 
 @client.event
 async def on_ready():
@@ -51,26 +50,20 @@ async def anime(interaction: nextcord.Interaction,
         creativity = random.choice(range(0, 18))
     psi_value = await make_creativity_valid(creativity)
 
-    await interaction.response.send_message(f"""Here's your Anime! Thanks for playing! :slight_smile:
+    await interaction.response.send_message(f"""Here's your Anime! I hope you like it! :slight_smile:
 *_Seed: {seed}_* || *_Creativity Level: {psi_value}_*
 https://thisanimedoesnotexist.ai/results/psi-{psi_value}/seed{seed}.png""")
 
 
 
 async def make_seed_valid(seed):
-    seed = str(seed)
-    while len(seed) < 5:
-        seed = "0" + seed
+    seed = f"{seed:05}"
     return seed
     
 async def make_creativity_valid(creativity_value):
-    creativity_value = creativity_value
-    creativity_value = convert_creativity_to_psi(creativity_value)
+    creativity_value = round(0.1 * creativity_value + 0.3, 1)
     return creativity_value
 
-def convert_creativity_to_psi(creativity):
-    psi_level = 0.1 * creativity + 0.3
-    return str(round(psi_level, 1))
 
-
-client.run(TOKEN)
+if __name__ == '__main__':
+    client.run(TOKEN)
