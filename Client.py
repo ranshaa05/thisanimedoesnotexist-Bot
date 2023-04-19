@@ -51,6 +51,9 @@ async def anime(
         description="Randomizes the creativity level (creativity value doen't matter).",
         required=False,
     ),
+    private: Optional[bool] = nextcord.SlashOption(
+        description="Makes it so only you can see the image.", default=False ,required=False
+    ),
 ):
     "Fetches a picture from an anime that does not exist yet from https://thisanimedoesnotexist.ai."
 
@@ -70,7 +73,8 @@ async def anime(
     await interaction.response.send_message(
         f"""Here's your Anime! I hope you like it! :slight_smile:
 *_Seed: {seed}_* || *_Creativity Level: {psi_value}_*
-https://thisanimedoesnotexist.ai/results/psi-{psi_value}/seed{seed}.png"""
+https://thisanimedoesnotexist.ai/results/psi-{psi_value}/seed{seed}.png""",
+        ephemeral=private,
     )
     logging.info(f"Bot finished for user {interaction.user}")
 
