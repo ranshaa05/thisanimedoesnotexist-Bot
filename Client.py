@@ -50,12 +50,12 @@ async def anime(
     ),
     random_creativity: Optional[bool] = nextcord.SlashOption(
         description="Randomizes the creativity level (creativity value doen't matter).",
-        default=True,
+        default=False,
         required=False,
     ),
     private: Optional[bool] = nextcord.SlashOption(
         description="Makes it so only you can see the image.",
-        default=True,
+        default=False,
         required=False,
     ),
 ):
@@ -67,11 +67,11 @@ async def anime(
     creativity = creativity - 1
 
     if random_seed:
-        seed = random.choice(range(0, 100000))
+        seed = random.randrange(100000)
     seed = await make_seed_valid(seed)
 
     if random_creativity:
-        creativity = random.choice(range(0, 18))
+        creativity = random.randrange(18)
     psi_value = await make_creativity_valid(creativity)
 
     await interaction.response.send_message(
