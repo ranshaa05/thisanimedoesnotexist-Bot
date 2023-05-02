@@ -7,7 +7,6 @@ import coloredlogs
 from nextcord.ext import commands
 from typing import Optional
 
-
 # logging config
 coloredlogs.install()
 logging.basicConfig(
@@ -45,14 +44,19 @@ async def anime(
         description="Creativity level for the picture.", required=True, default=1
     ),
     random_seed: Optional[bool] = nextcord.SlashOption(
-        description="Randomizes the seed (seed value doesn't matter).", required=False
+        description="Randomizes the seed (seed value doesn't matter).",
+        required=False,
+        default=True,
     ),
     random_creativity: Optional[bool] = nextcord.SlashOption(
         description="Randomizes the creativity level (creativity value doen't matter).",
+        default=True,
         required=False,
     ),
     private: Optional[bool] = nextcord.SlashOption(
-        description="Makes it so only you can see the image.", default=False ,required=False
+        description="Makes it so only you can see the image.",
+        default=True,
+        required=False,
     ),
 ):
     "Fetches a picture from an anime that does not exist yet from https://thisanimedoesnotexist.ai."
@@ -72,7 +76,7 @@ async def anime(
 
     await interaction.response.send_message(
         f"""Here's your Anime! I hope you like it! :slight_smile:
-*_Seed: {seed}_* || *_Creativity Level: {psi_value}_*
+*_Seed: {int(seed) - 1}_* || *_Creativity Level: {creativity}_*
 https://thisanimedoesnotexist.ai/results/psi-{psi_value}/seed{seed}.png""",
         ephemeral=private,
     )
