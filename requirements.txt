@@ -1,2 +1,2 @@
-nextcord == 2.4.1
-coloredlogs == 14.3
+nextcord == 2.6.0
+coloredlogs == 15.0.1
