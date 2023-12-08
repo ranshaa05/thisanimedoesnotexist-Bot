@@ -64,7 +64,6 @@ async def anime(
     logging.info(f"Bot started by user {interaction.user}")
     # this is in order to include 0 as a valid seed, as nextxord allows negative numbers if min is 0
     seed = seed - 1
-    creativity = creativity - 1
 
     if random_seed:
         seed = random.randrange(100000)
