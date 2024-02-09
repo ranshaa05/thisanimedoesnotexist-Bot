@@ -53,7 +53,8 @@ async def anime(
         default=False,
         required=False,
     ),
-    private: Optional[bool] = nextcord.SlashOption(
+    privacy: Optional[bool] = nextcord.SlashOption(
+        name="private",
         description="Makes it so only you can see the image.",
         default=False,
         required=False,
@@ -77,7 +78,7 @@ async def anime(
         f"""Here's your Anime! I hope you like it! :slight_smile:
 *_Seed: {int(seed) - 1}_* || *_Creativity Level: {creativity}_*
 https://thisanimedoesnotexist.ai/results/psi-{psi_value}/seed{seed}.png""",
-        ephemeral=private,
+        ephemeral=privacy,
     )
     logging.info(f"Bot finished for user {interaction.user}")
 
