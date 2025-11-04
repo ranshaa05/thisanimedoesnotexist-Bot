@@ -1,4 +1,4 @@
 @echo off
 echo -----ThisAnimeDoesNotExist Bot-----
-py Client.py
+python Client.py
 pause
