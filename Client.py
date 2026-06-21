@@ -46,7 +46,7 @@ async def anime(
     random_seed: Optional[bool] = nextcord.SlashOption(
         description="Randomizes the seed (seed value doesn't matter).",
         required=False,
-        default=True,
+        default=False,
     ),
     random_creativity: Optional[bool] = nextcord.SlashOption(
         description="Randomizes the creativity level (creativity value doen't matter).",
@@ -76,7 +76,7 @@ async def anime(
 
     await interaction.response.send_message(
         f"""Here's your Anime! I hope you like it! :slight_smile:
-*_Seed: {int(seed) - 1}_* || *_Creativity Level: {creativity}_*
+*_Seed: {seed}_* || *_Creativity Level: {creativity}_*
 https://thisanimedoesnotexist.ai/results/psi-{psi_value}/seed{seed}.png""",
         ephemeral=privacy,
     )
